@@ -10,7 +10,8 @@ import NotFound from "@/pages/not-found";
 
 function PrivateRoute({ component: Component }: { component: React.ComponentType }) {
   const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <Component /> : <AuthPage />;
+  // Bypass login for dev test
+  return <Component />;
 }
 
 function Router() {
@@ -24,7 +25,8 @@ function Router() {
 }
 
 function App() {
-  const [token, setToken] = useState<string | null>(localStorage.getItem("auth_token"));
+  // Bypass: default to a mock token for dev test
+  const [token, setToken] = useState<string | null>(localStorage.getItem("auth_token") || "dev-token");
 
   const login = (newToken: string) => {
     localStorage.setItem("auth_token", newToken);
