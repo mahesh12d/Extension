@@ -16,7 +16,7 @@ function PrivateRoute({ component: Component }: { component: React.ComponentType
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={() => <PrivateRoute component={Dashboard} />} />
+      <Route path="/" component={Dashboard} />
       <Route path="/auth" component={AuthPage} />
       <Route component={NotFound} />
     </Switch>
@@ -39,7 +39,9 @@ function App() {
   return (
     <AuthContext.Provider value={{ token, login, logout, isAuthenticated: !!token }}>
       <QueryClientProvider client={queryClient}>
-        <Router />
+        <div className="w-[350px] min-h-[500px] bg-background">
+          <Router />
+        </div>
         <Toaster />
       </QueryClientProvider>
     </AuthContext.Provider>

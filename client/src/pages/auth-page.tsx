@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { useLogin, useRegister } from "@/hooks/use-auth";
+import { useState, useEffect } from "react";
+import { useLogin, useRegister, useAuth } from "@/hooks/use-auth";
+import { useLocation } from "wouter";
 import { Button, Input } from "@/components/ui-components";
 import { Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -10,6 +11,14 @@ export default function AuthPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { toast } = useToast();
+  const { isAuthenticated } = useAuth();
+  const [_, setLocation] = useLocation();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      setLocation("/");
+    }
+  }, [isAuthenticated, setLocation]);
 
   const loginMutation = useLogin();
   const registerMutation = useRegister();

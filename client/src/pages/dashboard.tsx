@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
+import { useLocation } from "wouter";
 import { useProfiles, useDeleteProfile, useCreateProfile, useUpdateProfile } from "@/hooks/use-profiles";
 import { Button, Card, Dialog, Input } from "@/components/ui-components";
 import { LogOut, Plus, User, MapPin, Mail, Trash2, Edit2, Search } from "lucide-react";
@@ -8,7 +9,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { InsertProfile, Profile } from "@shared/schema";
 
 export default function Dashboard() {
-  const { logout } = useAuth();
+  const { logout, isAuthenticated } = useAuth();
+  const [_, setLocation] = useLocation();
+
+  if (!isAuthenticated) {
+    setLocation("/auth");
+    return null;
+  }
+  
   const { data: profiles, isLoading } = useProfiles();
   const deleteProfile = useDeleteProfile();
   const createProfile = useCreateProfile();
