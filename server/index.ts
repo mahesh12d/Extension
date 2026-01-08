@@ -2,6 +2,8 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
 import { createServer } from "http";
+import { storage } from "./storage";
+import bcrypt from "bcryptjs";
 
 const app = express();
 const httpServer = createServer(app);
@@ -60,6 +62,17 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Create default user for dev testing
+  const devUser = await storage.getUserByUsername("devuser");
+  if (!devUser) {
+    const hashedPassword = await bcrypt.hash("password", 10);
+    await storage.createUser({
+      username: "devuser",
+      password: hashedPassword,
+    });
+    console.log("Default devuser created");
+  }
+
   await registerRoutes(httpServer, app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {

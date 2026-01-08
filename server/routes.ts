@@ -15,8 +15,12 @@ const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
 
   // Bypass for dev test
   if (!token || token === "dev-token") {
-    (req as any).user = { id: 1, username: "devuser" };
-    return next();
+    // Get first user or fallback
+    storage.getUserByUsername("devuser").then(user => {
+      (req as any).user = { id: user?.id || 1, username: "devuser" };
+      next();
+    });
+    return;
   }
 
   jwt.verify(token, JWT_SECRET, (err: any, user: any) => {
@@ -81,6 +85,7 @@ export async function registerRoutes(httpServer: Server, app: Express): Promise<
       const profile = await storage.createProfile({ ...input, userId });
       res.status(201).json(profile);
     } catch (err) {
+      console.error("Error creating profile:", err);
       if (err instanceof z.ZodError) {
          res.status(400).json({ message: err.errors[0].message });
       } else {
