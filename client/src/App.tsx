@@ -39,7 +39,7 @@ function App() {
   return (
     <AuthContext.Provider value={{ token, login, logout, isAuthenticated: !!token }}>
       <QueryClientProvider client={queryClient}>
-        <div className="w-[350px] min-h-[500px] bg-background">
+        <div className="w-[400px] min-h-[500px] bg-background">
           <Router />
         </div>
         <Toaster />

@@ -44,9 +44,9 @@
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
     font-family: var(--font-body);
-    width: 400px; /* Force popup width for dev */
+    width: 400px;
     min-height: 500px;
-    margin: 0 auto;
+    margin: 0;
     overflow-x: hidden;
   }
 
